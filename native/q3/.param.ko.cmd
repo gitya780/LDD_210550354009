@@ -1,0 +1,1 @@
+cmd_/home/pi/device-drivers/native/q3/param.ko := ld -r  -EL  --build-id=sha1  -T scripts/module.lds -o /home/pi/device-drivers/native/q3/param.ko /home/pi/device-drivers/native/q3/param.o /home/pi/device-drivers/native/q3/param.mod.o;  true

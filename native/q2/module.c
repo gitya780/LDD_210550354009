@@ -1,12 +1,12 @@
-#include<linux/nodule.h>
+#include<linux/module.h>
 #include<linux/init.h>
 #include<linux/kernel.h>
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("GITESH");
-MODULE_DISCRIPTION("MODULE PARAMETER");
+MODULE_DESCRIPTION("MODULE PARAMETER");
 // VARIABLE ARE DECLEAR AS STATIC
-static int intvar 7;
+static int intvar = 7;
 module_param(intvar,int,S_IRUGO);
 
 static int param_init(void)
