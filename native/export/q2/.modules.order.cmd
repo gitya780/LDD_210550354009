@@ -1,0 +1,1 @@
+cmd_/home/pi/device-drivers/native/export/q2/modules.order := {   echo /home/pi/device-drivers/native/export/q2/avg.ko;   echo /home/pi/device-drivers/native/export/q2/add.ko; :; } | awk '!x[$$0]++' - > /home/pi/device-drivers/native/export/q2/modules.order
