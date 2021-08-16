@@ -10,15 +10,16 @@
 // Function Prototype
 int NAME_open(struct inode *inode, struct file *flip);
 int NAME_release(struct inode *inode, struct file *flip);
-
+ssize_t NAME_write(struct file *flip, const char __user *Ubuff,size_t count, loff_t *offp);
+ssize_t NAME_read(struct file *flip, char __user *Ubuff,size_t count,loff_t *offp);
 //struct that defines the operation that the driver provides
 
 struct file_operations fops =
 {
 	.owner = THIS_MODULE,
 	.open  = NAME_open,
-	//.read = NAME_read,
-	//.write = NAME_write,
+	.read = NAME_read,
+	.write = NAME_write,
 	.release = NAME_release,
 };
 
@@ -90,6 +91,47 @@ int NAME_release(struct inode *inode,struct file *flip)
 	printk(KERN_ALERT"\n This is the release method of my character driver\n");
 	return 0;
 }	
+ssize_t NAME_write(struct file *flip, const char __user *Ubuff,size_t count, loff_t *offp)
+{
+	char kbuff[80];
+	int result;
+	ssize_t ret;
+	result = copy_from_user((char*)kbuff,(char*)Ubuff,count);
+	if(result==0)
+	{
+		printk(KERN_ALERT"Msg from user=%S\n",kbuff);
+		printk(KERN_ALERT"%d data written successfully\n",count);
+		ret=count;
+		return count;
+		}
+		else
+	{
+		printk(KERN_ALERT"ERROR Writing data\n");
+		ret = -EFAULT;
+		return ret;
+	}
+}
+
+ssize_t NAME_read(struct file *flip, char __user *Ubuff,size_t count,loff_t *offp)
+{
+	char *kbuff[10]= "data";
+	int result;
+	ssize_t a;
+	result = copy_from_user((char*)Ubuff,(const char*)kbuff,count,sizeof(kbuff));
+	if(result==0)
+	{
+		printk("successfully\n");
+	a= sizeof(kbuff);
+	return count;
+	}
+	else
+	{
+		printk("error\n");
+		return -1;
+		
+	}
+
+
 module_init(CharDevice_init);
 module_exit(CharDevice_exit);
 

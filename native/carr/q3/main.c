@@ -1,4 +1,4 @@
-// initialization Functions......
+/ initialization Functions......
 #include<linux/init.h>
 #include<linux/module.h>
 #include<linux/kdev_t.h>
@@ -10,15 +10,16 @@
 // Function Prototype
 int NAME_open(struct inode *inode, struct file *flip);
 int NAME_release(struct inode *inode, struct file *flip);
-
+ssize_t NAME_write(struct file *flip, const char __user *Ubuff,size_t count, loff_t *offp);
+ssize_t Name_read(struct file *flip, char __user *Ubuff,size_t count,loff_t *offp);
 //struct that defines the operation that the driver provides
 
 struct file_operations fops =
 {
 	.owner = THIS_MODULE,
 	.open  = NAME_open,
-	//.read = NAME_read,
-	//.write = NAME_write,
+	.read = NAME_read,
+	.write = NAME_write,
 	.release = NAME_release,
 };
 
@@ -65,12 +66,13 @@ void __init CharDevice_exit(void)
 
 	dev_t Mydev;
 	int MAJOR,MINOR;
-	Mydev = MKDEV(255,0);// create a device driver
+	//Mydev = MKDEV(255,0);// create a device driver
+	alloc_chrdev_region(&mydev,0,1,"MyCharDevice");
 	MAJOR=MAJOR(Mydev);
 	MINOR=MINOR(Mydev);
 	
 printk("\n the Major number is %d...The Minor Number is %d\n",MAJOR,MINOR);
-unregister_chrdev_region(Mydev,1);// unregister device number and Device created
+//unregister_chrdev_region(Mydev,1);// unregister device number and Device created
 
 cdev_del(my_cdev);
 printk(KERN_ALERT"\n I have unregister the stuff thgat was  allocated ");
@@ -90,6 +92,47 @@ int NAME_release(struct inode *inode,struct file *flip)
 	printk(KERN_ALERT"\n This is the release method of my character driver\n");
 	return 0;
 }	
+ssize_t NAME_write(struct file *flip, const char __user *Ubuff,size_t count, loff_t *offp)
+{
+	char kbuff[80];
+	int result;
+	ssize_t ret;
+	result = copy_from_user((char*)kbuff,(char*)Ubuff,count);
+	if(result==0)
+	{
+		printk(KERN_ALERT"Msg from user=%S\n",kbuff);
+		printk(KERN_ALERT"%d data written successfully\n",count);
+		ret=count;
+		return count;
+		}
+		else
+	{
+		printk(KERN_ALERT"ERROR Writing data\n");
+		ret+ -EFAULT;
+		return ret;
+	}
+}
+
+ssize_t Name_read(struct file *flip, char __user *Ubuff,size_t count,loff_t *offp)
+{
+	char *kbuff[]= "data";
+	int result;
+	ssize_t a;
+	result = copy_from_user((char*)Ubuff,(const char*)kbuff,count,sizeof(kbuff));
+	if(result==0)
+	{
+		printk("successfully\n");
+	a= sizeof(kbuff);
+	return count;
+	}
+	else
+	{
+		printk("error\n");
+		return -1;
+		
+	}
+
+
 module_init(CharDevice_init);
 module_exit(CharDevice_exit);
 

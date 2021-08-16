@@ -1,4 +1,4 @@
-mai.o: /home/pi/device-drivers/native/carr/q1/mai.c \
+main.o: /home/pi/device-drivers/native/carr/q2/main.c \
  include/linux/kconfig.h include/generated/autoconf.h \
  include/linux/compiler_types.h include/linux/compiler_attributes.h \
  include/linux/compiler-gcc.h include/linux/init.h \

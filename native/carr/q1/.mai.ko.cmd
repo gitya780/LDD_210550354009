@@ -1,0 +1,1 @@
+cmd_/home/pi/device-drivers/native/carr/q1/mai.ko := ld -r  -EL  --build-id=sha1  -T scripts/module.lds -o /home/pi/device-drivers/native/carr/q1/mai.ko /home/pi/device-drivers/native/carr/q1/mai.o /home/pi/device-drivers/native/carr/q1/mai.mod.o;  true
