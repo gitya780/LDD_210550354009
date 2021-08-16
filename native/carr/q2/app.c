@@ -13,7 +13,7 @@ int main()
 		printf("\nError opening Device\n");
 		exit(1);
 	}	
-	write(FileDesc,Ubuff,sizeof(ubuff));
+	write(FileDesc,Ubuff,sizeof(Ubuff));
 	read(FileDesc,Kbuff,50);
 	printf("\n The Data read from the Kernel is\n>>>> %s <<<<\n",Kbuff);
 	close(FileDesc);

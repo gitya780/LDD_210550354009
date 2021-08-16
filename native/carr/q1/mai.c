@@ -60,7 +60,7 @@ return 0;
 
 // cleanup Module
 
-void __init CharDevice_exit(void)
+void __exit CharDevice_exit(void)
 {
 
 	dev_t Mydev;

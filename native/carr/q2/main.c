@@ -29,7 +29,7 @@ struct cdev *my_cdev;
 
 //init module
 
-static int __init  CharDevice_init(void)
+static int __init CharDevice_init(void)
 {
 	int result;
 	int MAJOR,MINOR;
@@ -61,7 +61,7 @@ return 0;
 
 // cleanup Module
 
-void __init CharDevice_exit(void)
+void __exit CharDevice_exit(void)
 {
 
 	dev_t Mydev;
@@ -91,7 +91,7 @@ int NAME_release(struct inode *inode,struct file *flip)
 	printk(KERN_ALERT"\n This is the release method of my character driver\n");
 	return 0;
 }	
-ssize_t NAME_write(struct file *flip, const char __user *Ubuff,size_t count, loff_t *offp)
+ssize_t NAME_write(struct file *flip, const char __user *Ubuff,size_t count,loff_t *offp)
 {
 	char kbuff[80];
 	int result;
@@ -99,7 +99,7 @@ ssize_t NAME_write(struct file *flip, const char __user *Ubuff,size_t count, lof
 	result = copy_from_user((char*)kbuff,(char*)Ubuff,count);
 	if(result==0)
 	{
-		printk(KERN_ALERT"Msg from user=%S\n",kbuff);
+		printk(KERN_ALERT"Msg from user=%s\n",kbuff);
 		printk(KERN_ALERT"%d data written successfully\n",count);
 		ret=count;
 		return count;
@@ -114,10 +114,10 @@ ssize_t NAME_write(struct file *flip, const char __user *Ubuff,size_t count, lof
 
 ssize_t NAME_read(struct file *flip, char __user *Ubuff,size_t count,loff_t *offp)
 {
-	char *kbuff[10]= "data";
+	char kbuff[10] = "data";
 	int result;
 	ssize_t a;
-	result = copy_from_user((char*)Ubuff,(const char*)kbuff,count,sizeof(kbuff));
+	result = copy_to_user((char*)Ubuff,(const char*)kbuff,sizeof(kbuff));
 	if(result==0)
 	{
 		printk("successfully\n");
@@ -130,6 +130,7 @@ ssize_t NAME_read(struct file *flip, char __user *Ubuff,size_t count,loff_t *off
 		return -1;
 		
 	}
+}	
 
 
 module_init(CharDevice_init);
