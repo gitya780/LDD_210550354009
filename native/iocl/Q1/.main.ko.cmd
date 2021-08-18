@@ -1,0 +1,1 @@
+cmd_/home/pi/device-drivers/native/iocl/Q1/main.ko := ld -r  -EL  --build-id=sha1  -T scripts/module.lds -o /home/pi/device-drivers/native/iocl/Q1/main.ko /home/pi/device-drivers/native/iocl/Q1/main.o /home/pi/device-drivers/native/iocl/Q1/main.mod.o;  true
