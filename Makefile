@@ -1,11 +1,14 @@
-obj-m:= main.o
-KDIR=/lib/modules/$(shell uname  -r)/build/
-PWD:=$(shell pwd)
+obj-m:= my_driver.o
 
-all:
-	make -C $(KDIR) M=$(PWD) modules
-	gcc app1.c -o apps
-	gcc app2.c -o apps
+KDIR = /lib/modules/$(shell uname -r)/build
+
+PWD = $(shell pwd)
+
+default:
+		make -C $(KDIR) M=$(PWD) modules
+		gcc UserAppWrite.c -o UserAppWrite
+		gcc UserAppRead.c -o UserAppRead
+		gcc UserAppIoctl.c -o UserAppIoctl
 clean:
-	make -C $(KDIR) M=$(PWD) clean
-	rm app1 app2
+		make -C $(KDIR) M=$(PWD) clean
+		rm UserAppWrite UserAppIoctl UserAppRead
